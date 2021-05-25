@@ -90,8 +90,7 @@ function randomBankCard(){
     var prev = 622126 + parseInt(Math.random() * 800);
     console.log(prev);
     var bardNo = prev + "" + (parseInt(Math.random()*99999999) + 100000000);
-    var luhnSum = parseInt(getLuhnSum(bardNo.split("")));
-    var checkCode = luhnSum % 10 == 0 ? '0' : (10 - luhnSum % 10 + '0');
+    var checkCode = getLuhnCheckCode(bardNo);
     console.log(checkCode);
     return bardNo + checkCode;
 }
@@ -103,17 +102,14 @@ function randomBankCard(){
      * 2、从卡号最后一位数字开始，逆向将偶数位数字，先乘以2（如果乘积为两位数，则将其减去9），再求和。
      * 3、将奇数位总和加上偶数位总和，结果应该可以被10整除。
      */
-function getLuhnSum(chs) {
-        var luhnSum = 0;
-        for (var i = chs.length - 1, j = 0; i >= 0; i--, j++) {
-            var k = chs[i] - '0';
-            if (j % 2 == 0) {
-                k *= 2;
-                k = k / 10 + k % 10;
-            }
-            luhnSum += k;
-        }
-        return luhnSum;
+function getLuhnCheckCode(bankcard) {
+	    let reverseCardArr = bankcard.split('').reverse()
+	    // 偶数和
+	    const evenSum = reverseCardArr.filter((r, i) => i % 2 === 1).reduce((c, r) => +c + +r)
+	    // 奇数*2 各个位数和
+	    const oddSum = reverseCardArr.filter((r, i) => i % 2 === 0).map(r => r * 2).reduce((accumulator, currentValue) => accumulator +  +('' + currentValue).split('').reduce((a, c) => +a + +c ), 0)
+	    const verificationCode = 10 - ((oddSum + evenSum) % 10 || 10)
+	    return verificationCode;
     }
 
 
