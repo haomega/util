@@ -31,8 +31,8 @@ var wi = [ "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5
 function randomIdCard(){
     var radomArea = areaCode[parseInt(Math.random()*3464)];
     // 随机日期
-    var startDate = new Date(1900,0,1).getTime();
-    var endDate =  new Date(2021,0,1).getTime();
+    var startDate = new Date(1950,0,1).getTime();
+    var endDate =  new Date(2002,0,1).getTime();
     var spaces = (endDate - startDate);
     var timestamp = Math.round(Math.random() * spaces);
     timestamp += startDate;
